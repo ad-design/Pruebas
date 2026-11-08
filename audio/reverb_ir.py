@@ -1,10 +1,10 @@
-"""Genera una respuesta al impulso estéreo sintética (sala de conciertos pequeña)."""
+"""Genera una respuesta al impulso estéreo sintética (sala pequeña y cercana)."""
 import sys
 import numpy as np
 import soundfile as sf
 from scipy.signal import butter, sosfilt
 
-sr, rt60, pre = 44100, 1.9, 0.022
+sr, rt60, pre = 44100, 1.2, 0.012
 n = int(sr * rt60 * 1.2)
 t = np.arange(n) / sr
 rng = np.random.default_rng(7)
