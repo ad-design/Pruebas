@@ -9,7 +9,7 @@ ffmpeg -hide_banner -loglevel error -i "$IN" -vn -c:a pcm_f32le "$TMP/orig.wav"
 python3 -I "$DIR/afinar.py" "$TMP/orig.wav" "$TMP/afinado.wav"
 python3 -I "$DIR/reverb_ir.py" "$TMP/ir.wav"
 
-# Limpieza + EQ + compresión, después reverb en paralelo (7 % húmedo)
+# Limpieza + EQ + compresión, después reverb en paralelo (10 % húmedo)
 FX="highpass=f=45,afftdn=nr=8:nf=-50:tn=1,\
 equalizer=f=220:t=q:w=1.0:g=-2.5,\
 equalizer=f=3200:t=q:w=1.2:g=-1.5,\
@@ -17,7 +17,7 @@ equalizer=f=6500:t=q:w=2:g=-1.5,\
 highshelf=f=11000:g=1.5,\
 acompressor=threshold=-22dB:ratio=2:attack=25:release=300:makeup=2"
 ffmpeg -hide_banner -loglevel error -i "$TMP/afinado.wav" -i "$TMP/ir.wav" -filter_complex \
- "[0:a]$FX,asplit[d][w];[w][1:a]afir=dry=10:wet=10[r];[d][r]amix=inputs=2:weights='0.93 0.07':normalize=0[o]" \
+ "[0:a]$FX,asplit[d][w];[w][1:a]afir=dry=10:wet=10[r];[d][r]amix=inputs=2:weights='0.90 0.10':normalize=0[o]" \
  -map "[o]" -c:a pcm_f32le "$TMP/mezcla.wav"
 
 # Normalización de volumen (-14 LUFS, pico real -1 dBTP), dos pasadas
